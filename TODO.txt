@@ -1,0 +1,24 @@
+Manage Interviews
+-----------------
+-create (in progress)
+-read
+-update
+-delete
+-export as .csv file
+-export as Google form?
+
+Submit Interviews
+-----------------
+-upload .csv file
+-submit interview through website
+-import Google form results as interviews?
+
+Authorization and Authentication
+--------------------------------
+-login page
+-redirect unauthenticated-users to login page
+
+Landing Page
+------------
+-explain what we do and how to get in touch
+

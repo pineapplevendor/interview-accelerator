@@ -10,8 +10,6 @@
        (views/add-interview-page))
   (POST "/add-interview" 
         {params :params}
-        (println "params")
-        (println params)
         (views/add-interview-results-page params))
   (route/not-found "Not Found"))
 

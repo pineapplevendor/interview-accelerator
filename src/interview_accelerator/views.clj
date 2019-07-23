@@ -1,6 +1,7 @@
 (ns interview-accelerator.views
   (:require [clojure.string :as str]
             [hiccup.page :as page]
+            [interview-accelerator.controllers :as controllers]
             [ring.util.anti-forgery :as util]))
 
 (defn create-new-question-input
@@ -24,17 +25,9 @@
     [:p [:input {:type "submit" :value "create interview"}]]]
    (page/include-js "/js/add_interview_page.js")))
 
-(defn get-questions
-  [form-data]
-  (filter #(not (empty? (second %)))
-    (select-keys 
-      form-data
-      (map #(keyword (str "question-" %)) (range 101)))))
-
 (defn add-interview-results-page
   [form-data]
   (page/html5
    [:h1 "Added an Interview"]
-   (println (get-questions form-data))
-   [:p (get-questions form-data)]))
+   [:p (controllers/get-valid-questions form-data)]))
     

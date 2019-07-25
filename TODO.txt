@@ -20,5 +20,5 @@ Authorization and Authentication
 
 Landing Page
 ------------
--explain what we do and how to get in touch
+-Contact info and how to use the app
 

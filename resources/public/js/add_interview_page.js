@@ -2,6 +2,10 @@ function showElement(id) {
   document.getElementById(id).style.display = 'block';
 }
 
+function hideElement(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
 const questionDivPrefix = 'new-question-';
 const addQuestionButtonPrefix = 'add-question-';
 [...Array(100).keys()].forEach(function(idx) {
@@ -10,6 +14,7 @@ const addQuestionButtonPrefix = 'add-question-';
   nextButton.addEventListener('click', function() {
     const nextId = questionDivPrefix + String(idx + 1);
     showElement(nextId);
+    hideElement(currentId);
   });
 });
 

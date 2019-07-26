@@ -14,3 +14,10 @@ To start a web server for the application, run:
 
     lein ring server
 
+## Formatting
+To check formatting:
+    lein cljfmt check 
+
+To fix formatting:
+    lein cljfmt fix
+

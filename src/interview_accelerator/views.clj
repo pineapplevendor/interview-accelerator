@@ -6,15 +6,15 @@
 
 (defn create-new-question-input
   [cur-id has-next-question should-display]
-  [:div {:id (str "new-question-" cur-id) 
+  [:div {:id (str "new-question-" cur-id)
          :style (if should-display "" "display: none;")}
    [:p (str "Question " (inc cur-id))
     [:p [:textarea {:name (str "question-" cur-id)}]]]
-    (if has-next-question 
-      [:p [:button {:id (str "add-question-" cur-id) :type "button"} 
-           "add question"]])])
+   (if has-next-question
+     [:p [:button {:id (str "add-question-" cur-id) :type "button"}
+          "add question"]])])
 
-(defn add-interview-page 
+(defn add-interview-page
   []
   (page/html5
    [:h1 "Create an Interview"]
@@ -33,4 +33,4 @@
    [:h1 "Added an Interview"]
    [:p (controllers/get-valid-questions form-data)]
    (page/include-css "/css/styles.css")))
-    
+

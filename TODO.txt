@@ -1,7 +1,8 @@
 Manage Interviews
 -----------------
 -create (in progress)
--read
+-read (in progress)
+-list (in progress)
 -update
 -delete
 -export as .csv file
@@ -11,6 +12,7 @@ Submit Interviews
 -----------------
 -upload .csv file
 -submit interview through website
+-through phone with amazon transcribe and twilio
 -import Google form results as interviews?
 
 Authorization and Authentication
@@ -21,4 +23,6 @@ Authorization and Authentication
 Landing Page
 ------------
 -Contact info and how to use the app
+
+
 

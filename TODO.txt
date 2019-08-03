@@ -4,7 +4,7 @@ Manage Interviews
 -read (in progress)
 -list (in progress)
 -update
--delete
+-delete (in progress)
 -export as .csv file
 -export as Google form?
 

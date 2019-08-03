@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [hiccup.page :as page]
             [interview-accelerator.controllers :as controllers]
+            [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
 
 (defn home-page
@@ -43,7 +44,12 @@
 
 (defn display-interview-link
   [interview-info]
-  [:p [:a {:href (:path interview-info)} (:title interview-info)]])
+  [:p 
+   [:a {:href (:path interview-info)} (:title interview-info)]
+   [:form {:action (str "/interviews/" (:id interview-info) "/delete")
+           :method "POST"} 
+    (util/anti-forgery-field)
+    [:input {:type "submit" :value "delete interview"}]]])
 
 (defn get-interviews-page
   []
@@ -66,6 +72,11 @@
 (defn get-interview-page
   [interview-id]
   (display-interview (controllers/get-interview interview-id)))
+
+(defn delete-interview-results-page
+  [interview-id]
+  (controllers/delete-interview interview-id)
+  (response/redirect "/interviews"))
 
   
 

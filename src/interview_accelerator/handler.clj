@@ -20,6 +20,9 @@
   (GET "/interviews/:interview-id"
     [interview-id]
     (views/get-interview-page interview-id))
+  (POST "/interviews/:interview-id/delete"
+    [interview-id]
+    (views/delete-interview-results-page interview-id))
   (route/not-found "Not Found"))
 
 (def app

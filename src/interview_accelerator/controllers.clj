@@ -6,7 +6,7 @@
   []
   (let [interviews (db-facade/get-interviews)]
     (map (fn [interview-id]
-           {:id interview-id 
+           {:id (name interview-id)
             :path (str "/interviews/" (name interview-id))
             :title (:title (interview-id interviews))})
          (keys interviews))))
@@ -37,3 +37,7 @@
   (get-interview (db-facade/add-interview 
                    (get-interview-title add-interviews-form)
                    (get-valid-questions add-interviews-form))))
+
+(defn delete-interview
+  [interview-id]
+  (db-facade/delete-interview interview-id))

@@ -28,6 +28,15 @@
                      :questions questions})))
     new-interview-id))
 
+(defn update-interview
+  [interview-id interview]
+  (println interview-id)
+  (println interview)
+  (swap! interviews
+         (fn [interview-state]
+           (assoc interview-state (keyword interview-id) interview)))
+  interview)
+
 (defn delete-interview
   [interview-id]
   (swap! interviews

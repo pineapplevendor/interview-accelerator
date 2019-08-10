@@ -4,40 +4,23 @@
 
 (defn get-interviews
   []
-  (let [interviews (db-facade/get-interviews)]
-    (map (fn [interview-id]
-           {:id (name interview-id)
-            :path (str "/interviews/" (name interview-id))
-            :title (:title (interview-id interviews))})
-         (keys interviews))))
+  (vals (db-facade/get-interviews)))
 
 (defn get-interview
   [interview-id]
   (get (db-facade/get-interviews) (keyword interview-id)))
 
-(defn get-interview-title
-  [add-interviews-form]
-  (:interview-title add-interviews-form))
-  
-(defn get-question-number
-  [question]
-  (read-string
-   (apply str (filter #(Character/isDigit %) (name (first question))))))
-
-(defn get-valid-questions
-  [add-interviews-form]
-  (sort-by get-question-number
-           (filter #(not (empty? (second %)))
-                   (select-keys
-                    add-interviews-form
-                    (map #(keyword (str "question-" %)) (range 101))))))
-
 (defn create-interview
-  [add-interviews-form]
+  [interview]
   (get-interview (db-facade/add-interview 
-                   (get-interview-title add-interviews-form)
-                   (get-valid-questions add-interviews-form))))
+                   (:title interview)
+                   (:questions interview))))
+
+(defn update-interview
+  [interview-id interview]
+  (db-facade/update-interview interview-id interview))
 
 (defn delete-interview
   [interview-id]
-  (db-facade/delete-interview interview-id))
+  (db-facade/delete-interview interview-id)
+  interview-id)

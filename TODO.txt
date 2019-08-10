@@ -1,18 +1,21 @@
 Manage Interviews
 -----------------
--create (in progress)
--read (in progress)
--list (in progress)
--update
--delete (in progress)
--export as .csv file
+-create (done)
+-read (done)
+-list (done)
+-update (done)
+-delete (done)
+-use a real database instead of mocked one
+  -paging and searching when retrieving interviews
+-export as .csv file?
 -export as Google form?
 
 Submit Interviews
 -----------------
--upload .csv file
--submit interview through website
--through phone with amazon transcribe and twilio
+-upload .csv file?
+-submit interview through website?
+-through phone with amazon transcribe and twilio?
+-through text?
 -import Google form results as interviews?
 
 Authorization and Authentication

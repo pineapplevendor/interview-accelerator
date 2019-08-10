@@ -12,9 +12,9 @@
 
 (defn create-interview
   [interview]
-  (get-interview (db-facade/add-interview 
-                   (:title interview)
-                   (:questions interview))))
+  (get-interview (db-facade/add-interview
+                  (:title interview)
+                  (:questions interview))))
 
 (defn update-interview
   [interview-id interview]

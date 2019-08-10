@@ -23,8 +23,8 @@
            (fn [interview-state]
              (assoc interview-state
                     (keyword new-interview-id)
-                    {:id new-interview-id 
-                     :title title 
+                    {:id new-interview-id
+                     :title title
                      :questions questions})))
     new-interview-id))
 
@@ -40,5 +40,5 @@
   (swap! interviews
          (fn [interview-state]
            (dissoc interview-state (keyword interview-id)))))
-      
+
 

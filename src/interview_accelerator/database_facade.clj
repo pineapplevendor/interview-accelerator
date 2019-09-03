@@ -29,10 +29,10 @@
     new-interview-id))
 
 (defn update-interview
-  [interview-id interview]
+  [interview]
   (swap! interviews
          (fn [interview-state]
-           (assoc interview-state (keyword interview-id) interview)))
+           (assoc interview-state (keyword (:id interview)) interview)))
   interview)
 
 (defn delete-interview

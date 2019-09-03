@@ -17,8 +17,8 @@
                   (:questions interview))))
 
 (defn update-interview
-  [interview-id interview]
-  (db-facade/update-interview interview-id interview))
+  [interview]
+  (db-facade/update-interview interview))
 
 (defn delete-interview
   [interview-id]

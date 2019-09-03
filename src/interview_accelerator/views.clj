@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [hiccup.page :as page]
             [interview-accelerator.controllers :as controllers]
+            [interview-accelerator.paths :as paths]
             [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
 
@@ -9,8 +10,8 @@
   []
   (page/html5
     [:h1 "Welcome to the Interview Accelerator"]
-    [:p [:a {:href "/interviews/create"} "add new interview"]]
-    [:p [:a {:href "/interviews"} "view interviews"]]
+    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
+    [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
     (page/include-css "/css/styles.css")))
 
 (defn create-question-input
@@ -31,7 +32,7 @@
   []
   (page/html5
    [:h1 "Create Interview"]
-   [:form {:action "/interviews/create" :method "POST"}
+   [:form {:action (paths/get-create-interview-path) :method "POST"}
     (util/anti-forgery-field)
     [:p "Interview Title"
       [:input {:type "text" :name "interview-title"}]]
@@ -47,7 +48,7 @@
   (let [interview (controllers/get-interview interview-id)]
     (page/html5
       [:h1 "Edit Interview"]
-      [:form {:action (str "/interviews/" interview-id "/update") 
+      [:form {:action (paths/get-update-interview-path interview-id) 
               :method "POST"}
        (util/anti-forgery-field)
        [:p "Interview Title"
@@ -68,26 +69,18 @@
   [question]
   [:p question])
 
-(defn get-interview-link
-  [interview-id]
-  (str "interviews/" interview-id))
-
-(defn get-update-interview-link
-  [interview-id]
-  (str "interviews/" interview-id "/update"))
-
 (defn display-interview-links
   [interview]
   [:p 
-   [:a {:href (get-interview-link (:id interview))} 
+   [:a {:href (paths/get-interview-base-path (:id interview))} 
     (:title interview)]
    [:ul
     [:li 
-     [:form {:action (get-update-interview-link (:id interview))
+     [:form {:action (paths/get-update-interview-path (:id interview))
              :method "GET"}
       [:input {:type "submit" :value "update"}]]]
     [:li
-     [:form {:action (str "/interviews/" (:id interview) "/delete")
+     [:form {:action (paths/get-delete-interview-path (:id interview))
              :method "POST"} 
       (util/anti-forgery-field)
       [:input {:type "submit" :value "delete"}]]]]])
@@ -146,5 +139,5 @@
 (defn delete-interview-results-page
   [interview-id]
   (controllers/delete-interview interview-id)
-  (response/redirect "/interviews"))
+  (response/redirect (paths/get-interviews-base-path)))
 

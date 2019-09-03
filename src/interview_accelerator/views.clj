@@ -42,7 +42,7 @@
     (map #(edit-question-input % true false "") (range 1 max-questions))
     (edit-question-input max-questions false false "")
     [:p [:input {:type "submit" :value "create interview"}]]]
-   (page/include-js "/js/add_interview_page.js")
+   (page/include-js "/js/edit_interview_page.js")
    (page/include-css "/css/styles.css")))
 
 (defn update-interview-page
@@ -64,7 +64,7 @@
            (range (count (:questions interview)) max-questions))
       (edit-question-input max-questions false false "")
       [:p [:input {:type "submit" :value "update interview"}]]]
-     (page/include-js "/js/add_interview_page.js")
+     (page/include-js "/js/edit_interview_page.js")
      (page/include-css "/css/styles.css"))))
 
 (defn display-interview-question

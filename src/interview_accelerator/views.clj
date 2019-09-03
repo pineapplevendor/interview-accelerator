@@ -9,10 +9,10 @@
 (defn home-page
   []
   (page/html5
-    [:h1 "Welcome to the Interview Accelerator"]
-    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
-    [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
-    (page/include-css "/css/styles.css")))
+   [:h1 "Welcome to the Interview Accelerator"]
+   [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
+   [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
+   (page/include-css "/css/styles.css")))
 
 (defn create-question-input
   [cur-id has-next-question should-display existing-question]
@@ -35,7 +35,7 @@
    [:form {:action (paths/get-create-interview-path) :method "POST"}
     (util/anti-forgery-field)
     [:p "Interview Title"
-      [:input {:type "text" :name "interview-title"}]]
+     [:input {:type "text" :name "interview-title"}]]
     (create-question-input 0 true true "")
     (map #(create-question-input % true false "") (range 1 100))
     (create-question-input 100 false false "")
@@ -47,23 +47,23 @@
   [interview-id]
   (let [interview (controllers/get-interview interview-id)]
     (page/html5
-      [:h1 "Edit Interview"]
-      [:form {:action (paths/get-update-interview-path interview-id) 
-              :method "POST"}
-       (util/anti-forgery-field)
-       [:p "Interview Title"
-        [:input {:type "text" 
-                 :name "interview-title" 
-                 :value (:title interview)}]]
-       (map-indexed (fn [idx question] 
-                      (update-question-input idx true question)) 
-                    (:questions interview))
-       (map #(create-question-input % true false "") 
-            (range (count (:questions interview)) 100))
-       (create-question-input 100 false false "")
-       [:p [:input {:type "submit" :value "update interview"}]]]
-       (page/include-js "/js/add_interview_page.js")
-       (page/include-css "/css/styles.css"))))
+     [:h1 "Edit Interview"]
+     [:form {:action (paths/get-update-interview-path interview-id)
+             :method "POST"}
+      (util/anti-forgery-field)
+      [:p "Interview Title"
+       [:input {:type "text"
+                :name "interview-title"
+                :value (:title interview)}]]
+      (map-indexed (fn [idx question]
+                     (update-question-input idx true question))
+                   (:questions interview))
+      (map #(create-question-input % true false "")
+           (range (count (:questions interview)) 100))
+      (create-question-input 100 false false "")
+      [:p [:input {:type "submit" :value "update interview"}]]]
+     (page/include-js "/js/add_interview_page.js")
+     (page/include-css "/css/styles.css"))))
 
 (defn display-interview-question
   [question]
@@ -71,17 +71,17 @@
 
 (defn display-interview-links
   [interview]
-  [:p 
-   [:a {:href (paths/get-interview-base-path (:id interview))} 
+  [:p
+   [:a {:href (paths/get-interview-base-path (:id interview))}
     (:title interview)]
    [:ul
-    [:li 
+    [:li
      [:form {:action (paths/get-update-interview-path (:id interview))
              :method "GET"}
       [:input {:type "submit" :value "update"}]]]
     [:li
      [:form {:action (paths/get-delete-interview-path (:id interview))
-             :method "POST"} 
+             :method "POST"}
       (util/anti-forgery-field)
       [:input {:type "submit" :value "delete"}]]]]])
 
@@ -89,7 +89,7 @@
   []
   (page/html5
    [:h1 "Interviews"]
-   (map #(display-interview-links %) (controllers/get-interviews)) 
+   (map #(display-interview-links %) (controllers/get-interviews))
    (page/include-css "/css/styles.css")))
 
 (defn display-interview
@@ -101,20 +101,20 @@
 
 (defn get-interview-title
   [interview-form]
-  (:interview-title interview-form)) 
- 
-(defn get-question-number 
-  [question]
-  (read-string 
-   (apply str (filter #(Character/isDigit %) (name (first question)))))) 
+  (:interview-title interview-form))
 
-(defn get-valid-questions 
-  [interview-form] 
+(defn get-question-number
+  [question]
+  (read-string
+   (apply str (filter #(Character/isDigit %) (name (first question))))))
+
+(defn get-valid-questions
+  [interview-form]
   (sort-by get-question-number
-           (filter #(not (empty? (second %))) 
+           (filter #(not (empty? (second %)))
                    (select-keys
-                     interview-form
-                     (map #(keyword (str "question-" %)) (range 101)))))) 
+                    interview-form
+                    (map #(keyword (str "question-" %)) (range 101))))))
 
 (defn get-interview-from-form
   [interview-form]
@@ -124,13 +124,13 @@
 
 (defn add-interview-results-page
   [interview-form]
-  (display-interview (controllers/create-interview 
-                       (get-interview-from-form interview-form))))
+  (display-interview (controllers/create-interview
+                      (get-interview-from-form interview-form))))
 
 (defn update-interview-results-page
   [interview-form]
   (display-interview (controllers/update-interview
-                       (get-interview-from-form interview-form))))
+                      (get-interview-from-form interview-form))))
 
 (defn get-interview-page
   [interview-id]

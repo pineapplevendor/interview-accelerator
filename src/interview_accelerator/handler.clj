@@ -18,11 +18,11 @@
     {params :params}
     (views/add-interview-results-page params))
 
-  (GET (paths/get-interviews-base-path) 
+  (GET (paths/get-interviews-base-path)
     []
     (views/get-interviews-page))
 
-  (GET (paths/get-interview-base-path paths/interview-id-path-param) 
+  (GET (paths/get-interview-base-path paths/interview-id-path-param)
     [interview-id]
     (views/get-interview-page interview-id))
 
@@ -30,7 +30,7 @@
     [interview-id]
     (views/delete-interview-results-page interview-id))
 
-  (GET (paths/get-update-interview-path paths/interview-id-path-param) 
+  (GET (paths/get-update-interview-path paths/interview-id-path-param)
     [interview-id]
     (views/update-interview-page interview-id))
 

@@ -6,6 +6,8 @@
             [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
 
+(def max-questions 100)
+
 (defn home-page
   []
   (page/html5
@@ -37,8 +39,8 @@
     [:p "Interview Title"
      [:input {:type "text" :name "interview-title"}]]
     (create-question-input 0 true true "")
-    (map #(create-question-input % true false "") (range 1 100))
-    (create-question-input 100 false false "")
+    (map #(create-question-input % true false "") (range 1 max-questions))
+    (create-question-input max-questions false false "")
     [:p [:input {:type "submit" :value "create interview"}]]]
    (page/include-js "/js/add_interview_page.js")
    (page/include-css "/css/styles.css")))
@@ -59,8 +61,8 @@
                      (update-question-input idx true question))
                    (:questions interview))
       (map #(create-question-input % true false "")
-           (range (count (:questions interview)) 100))
-      (create-question-input 100 false false "")
+           (range (count (:questions interview)) max-questions))
+      (create-question-input max-questions false false "")
       [:p [:input {:type "submit" :value "update interview"}]]]
      (page/include-js "/js/add_interview_page.js")
      (page/include-css "/css/styles.css"))))

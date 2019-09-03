@@ -16,7 +16,7 @@
    [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
    (page/include-css "/css/styles.css")))
 
-(defn create-question-input
+(defn edit-question-input
   [cur-id has-next-question should-display existing-question]
   [:div {:id (str "new-question-" cur-id)
          :style (if should-display "" "display: none;")}
@@ -28,7 +28,7 @@
 
 (defn update-question-input
   [cur-id has-next-question existing-question]
-  (create-question-input cur-id has-next-question true existing-question))
+  (edit-question-input cur-id has-next-question true existing-question))
 
 (defn add-interview-page
   []
@@ -38,9 +38,9 @@
     (util/anti-forgery-field)
     [:p "Interview Title"
      [:input {:type "text" :name "interview-title"}]]
-    (create-question-input 0 true true "")
-    (map #(create-question-input % true false "") (range 1 max-questions))
-    (create-question-input max-questions false false "")
+    (edit-question-input 0 true true "")
+    (map #(edit-question-input % true false "") (range 1 max-questions))
+    (edit-question-input max-questions false false "")
     [:p [:input {:type "submit" :value "create interview"}]]]
    (page/include-js "/js/add_interview_page.js")
    (page/include-css "/css/styles.css")))
@@ -60,9 +60,9 @@
       (map-indexed (fn [idx question]
                      (update-question-input idx true question))
                    (:questions interview))
-      (map #(create-question-input % true false "")
+      (map #(edit-question-input % true false "")
            (range (count (:questions interview)) max-questions))
-      (create-question-input max-questions false false "")
+      (edit-question-input max-questions false false "")
       [:p [:input {:type "submit" :value "update interview"}]]]
      (page/include-js "/js/add_interview_page.js")
      (page/include-css "/css/styles.css"))))

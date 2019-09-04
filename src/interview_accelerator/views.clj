@@ -7,6 +7,9 @@
             [ring.util.anti-forgery :as util]))
 
 (def max-questions 100)
+(def base-styles "/css/styles.css")
+(def edit-interview-js "/js/edit_interview_page.js")
+
 
 (defn home-page
   []
@@ -14,7 +17,7 @@
    [:h1 "Welcome to the Interview Accelerator"]
    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
    [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
-   (page/include-css "/css/styles.css")))
+   (page/include-css base-styles)))
 
 (defn edit-question-input
   [cur-id should-display existing-question]
@@ -41,8 +44,8 @@
     (edit-question-input 0 true "")
     (map #(edit-question-input % false "") (range 1 max-questions))
     [:p [:input {:type "submit" :value "create interview"}]]]
-   (page/include-js "/js/edit_interview_page.js")
-   (page/include-css "/css/styles.css")))
+   (page/include-js edit-interview-js)
+   (page/include-css base-styles)))
 
 (defn update-interview-page
   [interview-id]
@@ -62,8 +65,8 @@
       (map #(edit-question-input % false "")
            (range (count (:questions interview)) max-questions))
       [:p [:input {:type "submit" :value "update interview"}]]]
-     (page/include-js "/js/edit_interview_page.js")
-     (page/include-css "/css/styles.css"))))
+     (page/include-js edit-interview-js)
+     (page/include-css base-styles))))
 
 (defn display-interview-question
   [question]
@@ -71,16 +74,11 @@
 
 (defn get-update-and-delete-links
   [interview]
-  [:ul
-    [:li
-     [:form {:action (paths/get-update-interview-path (:id interview))
-             :method "GET"}
-      [:input {:type "submit" :value "update"}]]]
-    [:li
-     [:form {:action (paths/get-delete-interview-path (:id interview))
-             :method "POST"}
-      (util/anti-forgery-field)
-      [:input {:type "submit" :value "delete"}]]]])
+  [:span
+    [:a {:href (paths/get-update-interview-path (:id interview))} 
+     "update"]
+    [:a {:href (paths/get-delete-interview-path (:id interview))} 
+     "delete"]])
 
 (defn display-interview-links
   [interview]
@@ -94,7 +92,7 @@
   (page/html5
    [:h1 "Interviews"]
    (map #(display-interview-links %) (controllers/get-interviews))
-   (page/include-css "/css/styles.css")))
+   (page/include-css base-styles)))
 
 (defn display-interview
   [interview]
@@ -102,7 +100,18 @@
    [:h1 (str "Interview: " (:title interview))]
    (get-update-and-delete-links interview)
    (map #(display-interview-question %) (:questions interview))
-   (page/include-css "/css/styles.css")))
+   (page/include-css base-styles)))
+
+(defn display-confirm-delete
+  [interview]
+  (page/html5
+    [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
+    [:h1 (str "Confirm delete " (:title interview))]
+    [:form {:action (paths/get-delete-interview-path (:id interview))
+             :method "POST"}
+      (util/anti-forgery-field)
+      [:input {:type "submit" :value "delete"}]]
+    (page/include-css base-styles)))
 
 (defn get-interview-title
   [interview-form]
@@ -140,6 +149,11 @@
 (defn get-interview-page
   [interview-id]
   (display-interview (controllers/get-interview interview-id)))
+
+(defn delete-interview-confirmation-page
+  [interview-id]
+  (display-confirm-delete (controllers/get-interview interview-id)))
+
 
 (defn delete-interview-results-page
   [interview-id]

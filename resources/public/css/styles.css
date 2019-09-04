@@ -2,3 +2,7 @@ body {
   background-color: salmon;
   color: black;
 }
+
+a {
+  margin: 1em;
+}

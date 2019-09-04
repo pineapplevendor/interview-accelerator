@@ -26,6 +26,10 @@
     [interview-id]
     (views/get-interview-page interview-id))
 
+  (GET (paths/get-delete-interview-path paths/interview-id-path-param)
+    [interview-id]
+    (views/delete-interview-confirmation-page interview-id))
+
   (POST (paths/get-delete-interview-path paths/interview-id-path-param)
     [interview-id]
     (views/delete-interview-results-page interview-id))

@@ -17,18 +17,18 @@
    (page/include-css "/css/styles.css")))
 
 (defn edit-question-input
-  [cur-id has-next-question should-display existing-question]
+  [cur-id should-display existing-question]
   [:div {:id (str "new-question-" cur-id)
          :style (if should-display "" "display: none;")}
    [:p (str "Question " (inc cur-id))
     [:p [:textarea {:name (str "question-" cur-id)} existing-question]]]
-   (if has-next-question
-     [:p [:button {:id (str "add-question-" cur-id) :type "button"}
-          "add question"]])])
+   (cond (< cur-id (- max-questions 1))
+         [:p [:button {:id (str "add-question-" cur-id) :type "button"}
+              "add question"]])])
 
 (defn update-question-input
-  [cur-id has-next-question existing-question]
-  (edit-question-input cur-id has-next-question true existing-question))
+  [cur-id existing-question]
+  (edit-question-input cur-id true existing-question))
 
 (defn add-interview-page
   []
@@ -38,9 +38,8 @@
     (util/anti-forgery-field)
     [:p "Interview Title"
      [:input {:type "text" :name "interview-title"}]]
-    (edit-question-input 0 true true "")
-    (map #(edit-question-input % true false "") (range 1 max-questions))
-    (edit-question-input max-questions false false "")
+    (edit-question-input 0 true "")
+    (map #(edit-question-input % false "") (range 1 max-questions))
     [:p [:input {:type "submit" :value "create interview"}]]]
    (page/include-js "/js/edit_interview_page.js")
    (page/include-css "/css/styles.css")))
@@ -58,11 +57,10 @@
                 :name "interview-title"
                 :value (:title interview)}]]
       (map-indexed (fn [idx question]
-                     (update-question-input idx true question))
+                     (update-question-input idx question))
                    (:questions interview))
-      (map #(edit-question-input % true false "")
+      (map #(edit-question-input % false "")
            (range (count (:questions interview)) max-questions))
-      (edit-question-input max-questions false false "")
       [:p [:input {:type "submit" :value "update interview"}]]]
      (page/include-js "/js/edit_interview_page.js")
      (page/include-css "/css/styles.css"))))
@@ -71,12 +69,9 @@
   [question]
   [:p question])
 
-(defn display-interview-links
+(defn get-update-and-delete-links
   [interview]
-  [:p
-   [:a {:href (paths/get-interview-base-path (:id interview))}
-    (:title interview)]
-   [:ul
+  [:ul
     [:li
      [:form {:action (paths/get-update-interview-path (:id interview))
              :method "GET"}
@@ -85,7 +80,14 @@
      [:form {:action (paths/get-delete-interview-path (:id interview))
              :method "POST"}
       (util/anti-forgery-field)
-      [:input {:type "submit" :value "delete"}]]]]])
+      [:input {:type "submit" :value "delete"}]]]])
+
+(defn display-interview-links
+  [interview]
+  [:p
+   [:a {:href (paths/get-interview-base-path (:id interview))}
+    (:title interview)]
+   (get-update-and-delete-links interview)])
 
 (defn get-interviews-page
   []
@@ -98,6 +100,7 @@
   [interview]
   (page/html5
    [:h1 (str "Interview: " (:title interview))]
+   (get-update-and-delete-links interview)
    (map #(display-interview-question %) (:questions interview))
    (page/include-css "/css/styles.css")))
 

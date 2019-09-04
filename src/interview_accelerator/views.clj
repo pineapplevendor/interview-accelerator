@@ -50,6 +50,7 @@
   [interview-id]
   (let [interview (controllers/get-interview interview-id)]
     (page/html5
+     [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
      [:h1 "Edit Interview"]
      [:form {:action (paths/get-update-interview-path interview-id)
              :method "POST"}
@@ -96,8 +97,10 @@
 (defn display-interview
   [interview]
   (page/html5
+   [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
    [:h1 (str "Interview: " (:title interview))]
    (get-update-and-delete-links interview)
+   [:h3 "Questions:"]
    (map #(display-interview-question %) (:questions interview))
    (page/include-css base-styles)))
 

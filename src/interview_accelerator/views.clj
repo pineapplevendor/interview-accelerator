@@ -10,7 +10,6 @@
 (def base-styles "/css/styles.css")
 (def edit-interview-js "/js/edit_interview_page.js")
 
-
 (defn home-page
   []
   (page/html5
@@ -75,10 +74,10 @@
 (defn get-update-and-delete-links
   [interview]
   [:span
-    [:a {:href (paths/get-update-interview-path (:id interview))} 
-     "update"]
-    [:a {:href (paths/get-delete-interview-path (:id interview))} 
-     "delete"]])
+   [:a {:href (paths/get-update-interview-path (:id interview))}
+    "update"]
+   [:a {:href (paths/get-delete-interview-path (:id interview))}
+    "delete"]])
 
 (defn display-interview-links
   [interview]
@@ -105,13 +104,13 @@
 (defn display-confirm-delete
   [interview]
   (page/html5
-    [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
-    [:h1 (str "Confirm delete " (:title interview))]
-    [:form {:action (paths/get-delete-interview-path (:id interview))
-             :method "POST"}
-      (util/anti-forgery-field)
-      [:input {:type "submit" :value "delete"}]]
-    (page/include-css base-styles)))
+   [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
+   [:h1 (str "Confirm delete " (:title interview))]
+   [:form {:action (paths/get-delete-interview-path (:id interview))
+           :method "POST"}
+    (util/anti-forgery-field)
+    [:input {:type "submit" :value "delete"}]]
+   (page/include-css base-styles)))
 
 (defn get-interview-title
   [interview-form]
@@ -153,7 +152,6 @@
 (defn delete-interview-confirmation-page
   [interview-id]
   (display-confirm-delete (controllers/get-interview interview-id)))
-
 
 (defn delete-interview-results-page
   [interview-id]

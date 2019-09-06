@@ -10,6 +10,14 @@
     []
     (views/home-page))
 
+  (GET (paths/get-login-path)
+    {params :params}
+    (views/login-page params))
+
+  (POST (paths/get-login-path)
+    {params :params}
+    (views/login-results-page params))
+
   (GET (paths/get-create-interview-path)
     []
     (views/add-interview-page))

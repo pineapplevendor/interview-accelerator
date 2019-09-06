@@ -2,13 +2,13 @@
   (:require [clojure.string :as str]
             [interview-accelerator.database-facade :as db-facade]))
 
+(defn get-user
+  [username password]
+  (db-facade/get-user username password))
+
 (defn create-user
   [username password]
   (db-facade/add-user username password))
-
-(defn get-user 
-  [username password]
-  (db-facade/get-user username password))
 
 (defn is-username-taken?
   [username]

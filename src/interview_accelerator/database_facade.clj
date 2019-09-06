@@ -37,7 +37,6 @@
                    (= (:username user) username))
                  (vals @users))))
 
-
 (def interviews (atom {:123 {:id "123"
                              :title "Pizza Interview"
                              :questions ["Do you like pizza?"

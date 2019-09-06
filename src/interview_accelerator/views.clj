@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [hiccup.page :as page]
             [interview-accelerator.interviews-controller :as interviews]
+            [interview-accelerator.users-controller :as users]
             [interview-accelerator.paths :as paths]
             [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
@@ -17,6 +18,30 @@
    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
    [:p [:a {:href (paths/get-interviews-base-path)} "view interviews"]]
    (page/include-css base-styles)))
+
+(defn login-page
+  [params]
+  (page/html5
+   [:h1 "Please log in"]
+   [:form {:action (paths/get-login-path) :method "POST"}
+    (util/anti-forgery-field)
+    (cond (:previous-failed params)
+          [:p "Incorrect username or password"])
+    [:p
+     [:label {:for "username"} "username"]
+     [:input {:type "text" :name "username"}]]
+    [:p
+     [:label {:for "password"} "password"]
+     [:input {:type "password" :name "password"}]]
+    [:p [:input {:type "submit" :value "login"}]]]
+   (page/include-css base-styles)))
+
+(defn login-results-page
+  [login-form]
+  (cond (users/get-user (:username login-form) (:password login-form))
+        (response/redirect (paths/get-interviews-base-path))
+        :else (response/redirect
+               (str (paths/get-login-path) "?previous-failed=true"))))
 
 (defn edit-question-input
   [cur-id should-display existing-question]
@@ -100,8 +125,8 @@
    (get-update-and-delete-links interview)
    [:h3 "Questions:"]
    [:ul
-    (map (fn [question] 
-           [:li question]) 
+    (map (fn [question]
+           [:li question])
          (:questions interview))]
    (page/include-css base-styles)))
 

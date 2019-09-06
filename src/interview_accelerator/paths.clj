@@ -7,6 +7,10 @@
   []
   "/interviews")
 
+(defn get-login-path
+  []
+  "/login")
+
 (defn get-create-interview-path
   []
   (str (get-interviews-base-path) "/create"))

@@ -1,7 +1,7 @@
 (ns interview-accelerator.views
   (:require [clojure.string :as str]
             [hiccup.page :as page]
-            [interview-accelerator.controllers :as controllers]
+            [interview-accelerator.interviews-controller :as interviews]
             [interview-accelerator.paths :as paths]
             [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
@@ -48,7 +48,7 @@
 
 (defn update-interview-page
   [interview-id]
-  (let [interview (controllers/get-interview interview-id)]
+  (let [interview (interviews/get-interview interview-id)]
     (page/html5
      [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
      [:h1 "Edit Interview"]
@@ -91,7 +91,7 @@
   []
   (page/html5
    [:h1 "Interviews"]
-   (map #(display-interview-links %) (controllers/get-interviews))
+   (map #(display-interview-links %) (interviews/get-interviews))
    (page/include-css base-styles)))
 
 (defn display-interview
@@ -140,24 +140,24 @@
 
 (defn add-interview-results-page
   [interview-form]
-  (display-interview (controllers/create-interview
+  (display-interview (interviews/create-interview
                       (get-interview-from-form interview-form))))
 
 (defn update-interview-results-page
   [interview-form]
-  (display-interview (controllers/update-interview
+  (display-interview (interviews/update-interview
                       (get-interview-from-form interview-form))))
 
 (defn get-interview-page
   [interview-id]
-  (display-interview (controllers/get-interview interview-id)))
+  (display-interview (interviews/get-interview interview-id)))
 
 (defn delete-interview-confirmation-page
   [interview-id]
-  (display-confirm-delete (controllers/get-interview interview-id)))
+  (display-confirm-delete (interviews/get-interview interview-id)))
 
 (defn delete-interview-results-page
   [interview-id]
-  (controllers/delete-interview interview-id)
+  (interviews/delete-interview interview-id)
   (response/redirect (paths/get-interviews-base-path)))
 

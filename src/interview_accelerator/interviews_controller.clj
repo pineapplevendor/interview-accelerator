@@ -1,4 +1,4 @@
-(ns interview-accelerator.controllers
+(ns interview-accelerator.interviews-controller
   (:require [clojure.string :as str]
             [interview-accelerator.database-facade :as db-facade]))
 

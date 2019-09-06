@@ -1,5 +1,42 @@
 (ns interview-accelerator.database-facade
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [buddy.hashers :as hashers]))
+
+(defn get-uuid
+  []
+  (java.util.UUID/randomUUID))
+
+(def users (atom {:456 {:id "456"
+                        :username "pineapple"
+                        :password-hash (hashers/encrypt "p-h-1")}
+                  :654 {:id "654"
+                        :username "vendor"
+                        :password-hash (hashers/encrypt "p-h-2")}}))
+
+(defn add-user
+  [username password]
+  (let [user-id (get-uuid)]
+    (swap! users
+           (fn [users-state]
+             (assoc users-state
+                    (keyword user-id)
+                    {:id user-id
+                     :username username
+                     :password-hash (hashers/encrypt password)})))))
+
+(defn get-user
+  [username password]
+  (first (filter (fn [user]
+                   (and (= (:username user) username)
+                        (hashers/check password (:password-hash user))))
+                 (vals @users))))
+
+(defn user-exists?
+  [username]
+  (first (filter (fn [user]
+                   (= (:username user) username))
+                 (vals @users))))
+
 
 (def interviews (atom {:123 {:id "123"
                              :title "Pizza Interview"

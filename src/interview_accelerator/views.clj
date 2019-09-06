@@ -68,10 +68,6 @@
      (page/include-js edit-interview-js)
      (page/include-css base-styles))))
 
-(defn display-interview-question
-  [question]
-  [:p question])
-
 (defn get-update-and-delete-links
   [interview]
   [:span
@@ -82,7 +78,7 @@
 
 (defn display-interview-links
   [interview]
-  [:p
+  [:li
    [:a {:href (paths/get-interview-base-path (:id interview))}
     (:title interview)]
    (get-update-and-delete-links interview)])
@@ -92,7 +88,8 @@
   (page/html5
    [:h1 "Interviews"]
    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
-   (map #(display-interview-links %) (interviews/get-interviews))
+   [:ul
+    (map #(display-interview-links %) (interviews/get-interviews))]
    (page/include-css base-styles)))
 
 (defn display-interview
@@ -102,7 +99,10 @@
    [:h1 (str "Interview: " (:title interview))]
    (get-update-and-delete-links interview)
    [:h3 "Questions:"]
-   (map #(display-interview-question %) (:questions interview))
+   [:ul
+    (map (fn [question] 
+           [:li question]) 
+         (:questions interview))]
    (page/include-css base-styles)))
 
 (defn display-confirm-delete

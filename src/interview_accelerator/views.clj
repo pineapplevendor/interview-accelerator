@@ -91,6 +91,7 @@
   []
   (page/html5
    [:h1 "Interviews"]
+   [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
    (map #(display-interview-links %) (interviews/get-interviews))
    (page/include-css base-styles)))
 

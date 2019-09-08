@@ -6,6 +6,10 @@
   [username password]
   (db-facade/get-user username password))
 
+(defn get-user-by-id
+  [user-id]
+  (db-facade/get-user-by-id user-id))
+
 (defn create-user
   [username password]
   (db-facade/add-user username password))

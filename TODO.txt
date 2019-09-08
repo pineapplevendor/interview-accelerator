@@ -20,8 +20,10 @@ Submit Interviews
 
 Authorization and Authentication
 --------------------------------
--login page
+-login page (done)
+-signup page
 -redirect unauthenticated-users to login page
+  -on login, send back to last page?
 
 Landing Page
 ------------

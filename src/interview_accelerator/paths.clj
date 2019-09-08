@@ -8,8 +8,10 @@
   "/interviews")
 
 (defn get-login-path
-  []
-  "/login")
+  ([]
+   "/login")
+  ([login-error]
+   (str (get-login-path) "?" login-error "=true")))
 
 (defn get-create-interview-path
   []

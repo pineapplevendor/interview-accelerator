@@ -3,6 +3,7 @@
             [hiccup.page :as page]
             [interview-accelerator.interviews-controller :as interviews]
             [interview-accelerator.users-controller :as users]
+            [interview-accelerator.login-controller :as login]
             [interview-accelerator.paths :as paths]
             [ring.util.response :as response]
             [ring.util.anti-forgery :as util]))
@@ -37,11 +38,12 @@
    (page/include-css base-styles)))
 
 (defn login-results-page
-  [login-form]
-  (cond (users/get-user (:username login-form) (:password login-form))
-        (response/redirect (paths/get-interviews-base-path))
-        :else (response/redirect
-               (str (paths/get-login-path) "?previous-failed=true"))))
+  [login-form session]
+  (if-let [authenticated-session
+           (login/get-session-with-identity login-form session)]
+    (assoc (response/redirect (paths/get-interviews-base-path))
+           :session authenticated-session)
+    (response/redirect (paths/get-login-path "previous-failed"))))
 
 (defn edit-question-input
   [cur-id should-display existing-question]
@@ -72,8 +74,8 @@
    (page/include-css base-styles)))
 
 (defn update-interview-page
-  [interview-id]
-  (let [interview (interviews/get-interview interview-id)]
+  [interview-id user]
+  (let [interview (interviews/get-interview interview-id user)]
     (page/html5
      [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
      [:h1 "Edit Interview"]
@@ -109,12 +111,12 @@
    (get-update-and-delete-links interview)])
 
 (defn get-interviews-page
-  []
+  [user]
   (page/html5
    [:h1 "Interviews"]
    [:p [:a {:href (paths/get-create-interview-path)} "add new interview"]]
    [:ul
-    (map #(display-interview-links %) (interviews/get-interviews))]
+    (map #(display-interview-links %) (interviews/get-interviews user))]
    (page/include-css base-styles)))
 
 (defn display-interview
@@ -165,25 +167,25 @@
    :questions (get-valid-questions interview-form)})
 
 (defn add-interview-results-page
-  [interview-form]
+  [interview-form user]
   (display-interview (interviews/create-interview
-                      (get-interview-from-form interview-form))))
+                      (get-interview-from-form interview-form) user)))
 
 (defn update-interview-results-page
-  [interview-form]
+  [interview-form user]
   (display-interview (interviews/update-interview
-                      (get-interview-from-form interview-form))))
+                      (get-interview-from-form interview-form) user)))
 
 (defn get-interview-page
-  [interview-id]
-  (display-interview (interviews/get-interview interview-id)))
+  [interview-id user]
+  (display-interview (interviews/get-interview interview-id user)))
 
 (defn delete-interview-confirmation-page
-  [interview-id]
-  (display-confirm-delete (interviews/get-interview interview-id)))
+  [interview-id user]
+  (display-confirm-delete (interviews/get-interview interview-id user)))
 
 (defn delete-interview-results-page
-  [interview-id]
-  (interviews/delete-interview interview-id)
+  [interview-id user]
+  (interviews/delete-interview interview-id user)
   (response/redirect (paths/get-interviews-base-path)))
 

@@ -62,7 +62,7 @@
 
 (defn add-interview
   [title questions interviewer-id]
-  (let [new-interview-id (str (rand-int 1000000))]
+  (let [new-interview-id (str (get-uuid))]
     (swap! interviews
            (fn [interview-state]
              (assoc interview-state

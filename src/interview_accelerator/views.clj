@@ -62,6 +62,7 @@
 (defn add-interview-page
   []
   (page/html5
+   [:p [:a {:href (paths/get-interviews-base-path)} "Back to interviews"]]
    [:h1 "Create Interview"]
    [:form {:action (paths/get-create-interview-path) :method "POST"}
     (util/anti-forgery-field)

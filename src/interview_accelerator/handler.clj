@@ -10,7 +10,7 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
 
 (defroutes app-routes
-  (GET "/"
+  (GET (paths/get-home-page-path) 
     []
     (views/home-page))
 
@@ -61,10 +61,23 @@
   (fn [{user-id :identity :as request}]
     (handler (assoc request :user (users/get-user-by-id user-id)))))
 
+(defn has-page-permissions?
+  [request]
+  (or (:user request)
+      (contains? (paths/get-unauthenticated-paths) (:uri request))))
+
+(defn redirect-unauthenticated-users
+  [handler]
+  (fn [{user :user :as request}]
+    (if (has-page-permissions? request) 
+        (handler request)
+        (handler (assoc request :compojure/path (paths/get-login-path))))))
+
 (def backend (session-backend))
 
 (def app
   (-> #'app-routes
+      (redirect-unauthenticated-users)
       (wrap-user)
       (wrap-authentication backend)
       (wrap-authorization backend)

@@ -29,4 +29,12 @@
   [interview-id]
   (str (get-interview-base-path interview-id) "/delete"))
 
+(defn get-home-page-path
+  []
+  "/")
+
+(defn get-unauthenticated-paths
+  []
+  (set (list (get-login-path) (get-home-page-path))))
+
 

@@ -4,7 +4,7 @@
 
 (defn get-uuid
   []
-  (java.util.UUID/randomUUID))
+  (str (java.util.UUID/randomUUID)))
 
 (def users (atom {:456 {:id "456"
                         :username "pineapple"
@@ -62,7 +62,7 @@
 
 (defn add-interview
   [title questions interviewer-id]
-  (let [new-interview-id (str (get-uuid))]
+  (let [new-interview-id (get-uuid)]
     (swap! interviews
            (fn [interview-state]
              (assoc interview-state
